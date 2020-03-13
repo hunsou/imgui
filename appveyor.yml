@@ -1,6 +1,6 @@
 version: 1.0.{build}
 configuration: Release
-platform: Win32
+platform: x86
 clone_folder: C:\Projects\Github\imgui
 build:
   project: ./examples/imgui_examples.sln
@@ -8,3 +8,8 @@ build:
 artifacts:
 - path: .\examples\example_win32_directx9\Release\example_win32_directx9.exe
   name: example_win32_directx9.exe
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: jh3HUO1hV25i75MT9+1c4mBG2wE3X+RWfF+X/Qe6aqedRwHrTVN690kFmu4glHsu
+  artifact: example_win32_directx9.exe
