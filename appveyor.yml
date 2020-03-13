@@ -6,5 +6,5 @@ build:
   project: ./examples/imgui_examples.sln
   verbosity: minimal
 artifacts:
-- path: C:\Projects\Github\imgui\examples\example_win32_directx9\Release\example_win32_directx9.exe
+- path: .\examples\example_win32_directx9\Release\example_win32_directx9.exe
   name: example_win32_directx9.exe
