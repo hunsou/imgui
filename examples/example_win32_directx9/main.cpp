@@ -9,6 +9,10 @@
 #include <dinput.h>
 #include <tchar.h>
 
+#include <stdio.h>          // vsnprintf, sscanf, printf
+#ifdef _MSC_VER
+#pragma warning (disable: 4996) // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
+#endif
 // Data
 static LPDIRECT3D9              g_pD3D = NULL;
 static LPDIRECT3DDEVICE9        g_pd3dDevice = NULL;
@@ -23,10 +27,17 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 // Main code
 int main(int, char**)
 {
+    bool popupclose_flag = false;
+    static bool iSwitchWinMaximizeRestore = false;
+    if (0)
+    {
+        #pragma comment(linker, "/subsystem:windows /entry:mainCRTStartup")
+    }
     // Create application window
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, _T("ImGui Example"), NULL };
     ::RegisterClassEx(&wc);
-    HWND hwnd = ::CreateWindow(wc.lpszClassName, _T("Dear ImGui DirectX9 Example"), WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
+    //HWND hwnd = ::CreateWindow(wc.lpszClassName, _T("Dear ImGui DirectX9 Example"), WS_OVERLAPPEDWINDOW, 100, 100, 800, 600, NULL, NULL, wc.hInstance, NULL);
+    HWND hwnd = ::CreateWindow(wc.lpszClassName, _T("Dear ImGui DirectX9 Example"), WS_POPUP, 100, 100, 800, 600, NULL, NULL, wc.hInstance, NULL);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -44,7 +55,7 @@ int main(int, char**)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
@@ -71,7 +82,7 @@ int main(int, char**)
     //IM_ASSERT(font != NULL);
 
     // Our state
-    bool show_demo_window = true;
+    bool show_demo_window = false;
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -97,6 +108,111 @@ int main(int, char**)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
+        if (ImGui::BeginMainMenuBar())
+        {
+            if (ImGui::BeginMenu("File"))
+            {
+                //ShowExampleMenuFile();
+                ImGui::MenuItem("(dummy menu)", NULL, false, false);
+                if (ImGui::MenuItem("Quit", "Alt+F4"))
+                {
+                    ::SendMessage(hwnd, WM_SYSCOMMAND, SC_CLOSE, 0);
+                    //ImGui::OpenPopup("Close?");
+                }                
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Edit"))
+            {
+                if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+                if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+                ImGui::Separator();
+                if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+                if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+                if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Window"))
+            {
+                if (ImGui::MenuItem("Max"))
+                {                    
+                    ::PostMessage(hwnd, WM_SYSCOMMAND, !iSwitchWinMaximizeRestore ? SC_MAXIMIZE : SC_RESTORE, 0);
+                    iSwitchWinMaximizeRestore = !iSwitchWinMaximizeRestore;
+                }
+                if (ImGui::MenuItem("Min"))
+                {
+                    ::SendMessage(hwnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+                }
+                if (ImGui::MenuItem("Close"))
+                {
+                    ::SendMessage(hwnd, WM_SYSCOMMAND, SC_CLOSE, 0);
+                }
+                ImGui::EndMenu();
+            }            
+            /*ImGui::Begin("Hello, world!中文1");
+            ImGui::End();*/
+            char buf[128];
+            //sprintf(buf, "Animated title %c %d###AnimatedTitle", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], ImGui::GetFrameCount());
+            //sprintf(buf, "Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            sprintf(buf, "(%.1f FPS)", ImGui::GetIO().Framerate);
+            ImGui::MenuItem(buf, NULL, false, false);
+            if (ImGui::MenuItem("x"))
+            {
+                ::SendMessage(hwnd, WM_SYSCOMMAND, SC_CLOSE, 0);
+            }
+            if (ImGui::MenuItem("+"))
+            {
+                ::PostMessage(hwnd, WM_SYSCOMMAND, !iSwitchWinMaximizeRestore ? SC_MAXIMIZE : SC_RESTORE, 0);
+                iSwitchWinMaximizeRestore = !iSwitchWinMaximizeRestore;
+            }
+            if (ImGui::MenuItem("-"))
+            {
+                ::SendMessage(hwnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+            }            
+            ImGui::EndMainMenuBar();
+        }
+
+        for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) //if (io.KeysDownDuration[i] >= 0.0f) { ImGui::SameLine(); ImGui::Text("%d (0x%X) (%.02f secs)", i, i, io.KeysDownDuration[i]); }
+        {
+            if (io.KeysDownDuration[i] >= 0.0f && i == 27)
+            {
+                if (!popupclose_flag)
+                {
+                    popupclose_flag = true;
+                    ImGui::OpenPopup("Close?");
+                }
+                
+            }
+        }
+
+        if (ImGui::BeginPopupModal("Close?", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
+        {
+            ImGui::Text("Application will be closed.\nThis operation cannot be undone!\n\n");
+            ImGui::Separator();
+
+            //static int dummy_i = 0;
+            //ImGui::Combo("Combo", &dummy_i, "Delete\0Delete harder\0");
+
+            /*static bool dont_ask_me_next_time = false;
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+            ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+            ImGui::PopStyleVar();*/
+
+            if (ImGui::Button("OK", ImVec2(120, 0)))
+            {
+                ImGui::CloseCurrentPopup();
+                ::SendMessage(hwnd, WM_SYSCOMMAND, SC_CLOSE, 0);               
+            }
+            ImGui::SetItemDefaultFocus();                
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120, 0)))
+            {
+                ImGui::CloseCurrentPopup();
+                popupclose_flag = false;
+            }
+            ImGui::EndPopup();
+            
+        }
+
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
@@ -106,7 +222,9 @@ int main(int, char**)
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            ImGuiWindowFlags window_flags_ = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+
+            ImGui::Begin("Hello, world!中文", NULL, window_flags_);                          // Create a window called "Hello, world!" and append into it.
 
             ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
@@ -115,8 +233,28 @@ int main(int, char**)
             ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
             ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
+            ImGuiStyle& style = ImGui::GetStyle();
+            style.WindowRounding = 0.0f;
+            //ImGui::SliderFloat("WindowRounding", &style.WindowRounding, 0.0f, 0.0f, "%.0f");
+
             if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
                 counter++;
+                //::PostQuitMessage(0);
+                //::SendMessage(hwnd, WM_SYSCOMMAND, SC_CLOSE, 0);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Min"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
+                //::PostQuitMessage(0);
+                ::SendMessage(hwnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Max"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
+                //::PostQuitMessage(0);
+                //::SendMessage(hwnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            }
             ImGui::SameLine();
             ImGui::Text("counter = %d", counter);
 
@@ -208,11 +346,62 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 // Win32 message handler
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    static POINT pt, pe;
+    static RECT rt, re;
     if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
         return true;
 
     switch (msg)
     {
+    case WM_CREATE:
+        {
+            //int scrWidth, scrHeight;
+            //RECT rect;
+            ////获得屏幕尺寸
+            //scrWidth = GetSystemMetrics(SM_CXSCREEN);
+            //scrHeight = GetSystemMetrics(SM_CYSCREEN);
+            ////取得窗口尺寸
+            //GetWindowRect(hWnd, &rect);
+            ////重新设置rect里的值
+            //rect.left = (scrWidth - rect.right + rect.left) / 2;
+            //rect.top = (scrHeight - rect.bottom + rect.top) / 2;
+            //rect.right = rect.right - rect.left;    // 保存窗口宽度
+            //rect.bottom = rect.bottom - rect.top; // 保存窗口高度
+            ////移动窗口到指定的位置
+            //SetWindowPos(hWnd, HWND_TOP, rect.left, rect.top, rect.right, rect.bottom, SWP_SHOWWINDOW);
+
+            RECT rect;
+            int	xLeft, yTop;
+            GetWindowRect(hWnd, &rect);
+            /*xLeft = (GetSystemMetrics(SM_CXFULLSCREEN) - (rect.right - rect.left)) / 2;
+            yTop = (GetSystemMetrics(SM_CYFULLSCREEN) - (rect.bottom - rect.top)) / 2;*/
+            xLeft = (GetSystemMetrics(SM_CXSCREEN) - (rect.right - rect.left)) / 2;
+            yTop = (GetSystemMetrics(SM_CYSCREEN) - (rect.bottom - rect.top)) / 2;
+            // Move the window to the correct coordinates with SetWindowPos()
+            //bResult = SetWindowPos(hWnd,HWND_TOP,xLeft,yTop,-1,-1,SWP_NOSIZE|SWP_NOZORDER/*|SWP_NOACTIVATE*/);
+            SetWindowPos(hWnd, HWND_TOPMOST, xLeft, yTop, -1, -1, SWP_NOSIZE | SWP_NOZORDER);
+            SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+        }
+        break;
+    case WM_RBUTTONDOWN:
+        SetCapture(hWnd);      // 设置鼠标捕获(防止光标跑出窗口失去鼠标热点)
+        GetCursorPos(&pt);      // 获取鼠标光标指针当前位置
+        GetWindowRect(hWnd, &rt);  // 获取窗口位置与大小
+        re.right = rt.right - rt.left;    // 保存窗口宽度
+        re.bottom = rt.bottom - rt.top; // 保存窗口高度
+        break;
+    case WM_RBUTTONUP:
+        ReleaseCapture();      // 释放鼠标捕获，恢复正常状态
+        break;
+    case WM_MOUSEMOVE:
+        GetCursorPos(&pe);     // 获取光标指针的新位置
+        if (wParam == MK_RBUTTON)    // 当鼠标右键按下
+        {
+            re.left = rt.left + (pe.x - pt.x);  // 窗口新的水平位置
+            re.top = rt.top + (pe.y - pt.y); // 窗口新的垂直位置
+            MoveWindow(hWnd, re.left, re.top, re.right, re.bottom, true); // 移动窗口
+        }
+        break;
     case WM_SIZE:
         if (g_pd3dDevice != NULL && wParam != SIZE_MINIMIZED)
         {
