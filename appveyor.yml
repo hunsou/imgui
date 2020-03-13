@@ -29,9 +29,9 @@ deploy:
   auth_token:
     secure: jh3HUO1hV25i75MT9+1c4mBG2wE3X+RWfF+X/Qe6aqedRwHrTVN690kFmu4glHsu
   artifact: $env:APPVEYOR_BUILD_VERSION.zip
-  draft: true
-    prerelease: true
-    on:
-      branch: master                # release from master branch only
-      configuration: Release
-      APPVEYOR_REPO_TAG: true       # deploy on tag push only
+  #draft: true
+    #prerelease: true
+    #on:
+      #branch: master                # release from master branch only
+      #configuration: Release
+      #APPVEYOR_REPO_TAG: true       # deploy on tag push only
