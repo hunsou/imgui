@@ -1,6 +1,6 @@
 version: 1.0.{build}
 configuration: Release
-platform: x86
+platform: Win32
 clone_folder: C:\Projects\Github\imgui
 build:
   project: ./examples/imgui_examples.sln
