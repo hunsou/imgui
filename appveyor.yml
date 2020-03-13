@@ -18,8 +18,8 @@ artifacts:
   name: example_glfw_opengl2.exe
 - path: .\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
   name: example_glfw_opengl3.exe
-- path: .\$env:APPVEYOR_BUILD_VERSION.zip
-  name: $env:APPVEYOR_BUILD_VERSION.zip
+#- path: .\$env:APPVEYOR_BUILD_VERSION.zip
+#  name: $env:APPVEYOR_BUILD_VERSION.zip
 
 after_build:
   -ps: 7z a .\$env:APPVEYOR_BUILD_VERSION.zip .\examples\example_win32_directx9\Release\example_win32_directx9.exe .\examples\example_win32_directx10\Release\example_win32_directx10.exe .\examples\example_win32_directx11\Release\example_win32_directx11.exe .\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe .\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
