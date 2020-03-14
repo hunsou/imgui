@@ -11,8 +11,55 @@ build:
 after_build:
 #  -ps: 
 #ps: |
-- ps: 7z a $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx9\Release\example_win32_directx9.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx10\Release\example_win32_directx10.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx11\Release\example_win32_directx11.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
-- ps: Push-AppveyorArtifact "$env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip"
+#- ps: 7z a $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx9\Release\example_win32_directx9.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx10\Release\example_win32_directx10.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx11\Release\example_win32_directx11.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
+#- ps: Push-AppveyorArtifact "$env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip"
+
+ps: |
+    function CalculateHash($file)
+    {
+        $newLine = "`r`n"
+        $text = (Split-Path $file -Leaf) + $newLine
+        $text += 'MD5' + $newLine
+        $text += (Get-FileHash $file -Algorithm MD5).Hash + $newLine
+        $text += 'SHA-1' + $newLine
+        $text += (Get-FileHash $file -Algorithm SHA1).Hash + $newLine
+        $text += 'SHA-256' + $newLine
+        $text += (Get-FileHash $file -Algorithm SHA256).Hash + $newLine
+        $text += 'SHA-512' + $newLine
+        $text += (Get-FileHash $file -Algorithm SHA512).Hash
+        return $text
+    }
+    #$WorkingFolder = "$env:APPVEYOR_BUILD_FOLDER\working"
+    #$ExeFileName = "imgui-$env:APPVEYOR_BUILD_VERSION-$env:CONFIGURATION.exe"
+    #$ExeFile = "$WorkingFolder\$ExeFileName"
+    #$ExeHashFile = "$Exefile.hash"
+    #New-Item $WorkingFolder -ItemType Directory -Force
+    #Copy-Item $env:APPVEYOR_BUILD_FOLDER\shadowsocks-csharp\bin\$env:PLATFORM\$env:CONFIGURATION\Shadowsocks.exe $WorkingFolder\Shadowsocks.exe
+    #Copy-Item $WorkingFolder\Shadowsocks.exe $ExeFile
+    #CalculateHash -file $Exefile | Out-File -FilePath $ExeHashFile
+    #Push-AppveyorArtifact $ExeFile
+    #Push-AppveyorArtifact $ExeHashFile
+    # Create and deploy the release zip
+    if ($env:configuration -eq 'Release')
+    {
+        #$ReleaseFile = "$WorkingFolder\Shadowsocks.exe"
+        #$HashFile = "$ReleaseFile.hash"
+        #$ZipFile = "$WorkingFolder\Shadowsocks-$env:APPVEYOR_BUILD_VERSION.zip"
+        #$ZipHashFile = "$ZipFile.hash"
+        # Calculate exe Hash and archieve both exe and hash to zip
+        #CalculateHash -file $ReleaseFile | Out-File -FilePath $hashFile
+        #7z a $ZipFile $ReleaseFile
+        #7z a $ZipFile $HashFile
+        7z a $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx9\Release\example_win32_directx9.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx10\Release\example_win32_directx10.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx11\Release\example_win32_directx11.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
+        #Push-AppveyorArtifact $ZipFile
+        Push-AppveyorArtifact $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip
+        # Calculate zip Hash
+        #CalculateHash -file $ZipFile | Out-File -FilePath $ZipHashFile
+        CalculateHash -file $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip | Out-File -FilePath $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip.hash
+        #Push-AppveyorArtifact $ZipHashFile
+        Push-AppveyorArtifact $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip.hash
+    }
+
 
 #artifacts:
 #- path: .\examples\example_win32_directx9\Release\example_win32_directx9.exe
@@ -32,7 +79,7 @@ deploy:
 - provider: GitHub
   auth_token:
     secure: jh3HUO1hV25i75MT9+1c4mBG2wE3X+RWfF+X/Qe6aqedRwHrTVN690kFmu4glHsu
-  artifact: release-%APPVEYOR_BUILD_VERSION%.zip
+  artifact: release-%APPVEYOR_BUILD_VERSION%.zip,release-%APPVEYOR_BUILD_VERSION%.zip.hash
   #artifact: /.*\.zip/
   #draft: true
   prerelease: true
