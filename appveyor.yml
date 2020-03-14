@@ -57,7 +57,7 @@ after_build:
         Push-AppveyorArtifact $ZipFile
         #Push-AppveyorArtifact $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip
         # Calculate zip Hash
-        #CalculateHash -file $ZipFile | Out-File -FilePath $ZipHashFile
+        CalculateHash -file $ZipFile | Out-File -FilePath $ZipHashFile
         #CalculateHash -file $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip | Out-File -FilePath $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip.hash
         Push-AppveyorArtifact $ZipHashFile
         #Push-AppveyorArtifact $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip.hash
