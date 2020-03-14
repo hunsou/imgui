@@ -1,6 +1,6 @@
 version: 1.0.{build}
 configuration: 
-- Debug
+#- Debug
 - Release
 platform: Win32
 clone_folder: C:\Projects\Github\imgui
