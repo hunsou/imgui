@@ -76,60 +76,21 @@ after_build:
     if ($env:configuration -eq 'Release')
     {
         #$ReleaseFile = "$WorkingFolder\Shadowsocks.exe"
-        #$ReleaseFile = "$ExeFile1 +' '+ $ExeFile2 +' '+ $ExeFile3 +' '+ $ExeFile4 +' '+ $ExeFile5"
-        $ReleaseFile = "$WorkingFolder\*.*"
+        $ReleaseFile = "$WorkingFolder\*.exe"
         #$HashFile = "$ReleaseFile.hash"
-        $HashFile = "$ExeHashFile1 $ExeHashFile2 $ExeHashFile3 $ExeHashFile4 $ExeHashFile5"
-        #$ZipFile = "$WorkingFolder\Shadowsocks-$env:APPVEYOR_BUILD_VERSION.zip"        
-        #$ZipFile = "$env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip"
+        $HashFile = "$WorkingFolder\*.exe.hash"
+        #$ZipFile = "$WorkingFolder\Shadowsocks-$env:APPVEYOR_BUILD_VERSION.zip"
         $ZipFile = "$WorkingFolder\nightly-$env:APPVEYOR_BUILD_VERSION.zip"
         $ZipHashFile = "$ZipFile.hash"
         # Calculate exe Hash and archieve both exe and hash to zip
-        #CalculateHash -file $ReleaseFile | Out-File -FilePath $hashFile
-        #7z a $ZipFile $ReleaseFile
-        #7z a $ZipFile $ExeFile1
-        #7z a $ZipFile $ExeFile2
-        #7z a $ZipFile $ExeFile3
-        #7z a $ZipFile $ExeFile4
-        #7z a $ZipFile $ExeFile5
-        #foreach ($file in $ReleaseFile) {
-        #    7z a $ZipFile $file
-        #}        
+        #CalculateHash -file $ReleaseFile | Out-File -FilePath $hashFile        
         7z a $ZipFile $ReleaseFile
-        #7z a $ZipFile $ExeFile1 +" "+ $ExeFile2 +" "+ $ExeFile3 +" "+ $ExeFile4 +" "+ $ExeFile5
-        #7z a $ZipFile $HashFile
-        #7z a $ZipFile $ExeHashFile1
-        #7z a $ZipFile $ExeHashFile2
-        #7z a $ZipFile $ExeHashFile3
-        #7z a $ZipFile $ExeHashFile4
-        #7z a $ZipFile $ExeHashFile5
-        #foreach ($file in $HashFile) {
-        #    7z a $ZipFile $file
-        #}
-        #7z a $ZipFile $ExeHashFile1 +" "+ $ExeHashFile2 +" "+ $ExeHashFile3 +" "+ $ExeHashFile4 +" "+ $ExeHashFile5
-        #7z a $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx9\Release\example_win32_directx9.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx10\Release\example_win32_directx10.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx11\Release\example_win32_directx11.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
+        7z a $ZipFile $HashFile
         Push-AppveyorArtifact $ZipFile
-        #Push-AppveyorArtifact $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip
         # Calculate zip Hash
         CalculateHash -file $ZipFile | Out-File -FilePath $ZipHashFile
-        #CalculateHash -file $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip | Out-File -FilePath $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip.hash
-        Push-AppveyorArtifact $ZipHashFile
-        #Push-AppveyorArtifact $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip.hash
+        Push-AppveyorArtifact $ZipHashFile        
     }
-
-#artifacts:
-#- path: .\examples\example_win32_directx9\Release\example_win32_directx9.exe
-#  name: example_win32_directx9.exe
-#- path: .\examples\example_win32_directx10\Release\example_win32_directx10.exe
-#  name: example_win32_directx10.exe
-#- path: .\examples\example_win32_directx11\Release\example_win32_directx11.exe
-#  name: example_win32_directx11.exe
-#- path: .\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe
-#  name: example_glfw_opengl2.exe
-#- path: .\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
-#  name: example_glfw_opengl3.exe
-#- path: .\$env:APPVEYOR_BUILD_VERSION.zip
-#  name: $env:APPVEYOR_BUILD_VERSION.zip
 
 deploy:
 - provider: GitHub
