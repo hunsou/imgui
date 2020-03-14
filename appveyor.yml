@@ -81,18 +81,24 @@ after_build:
         # Calculate exe Hash and archieve both exe and hash to zip
         #CalculateHash -file $ReleaseFile | Out-File -FilePath $hashFile
         #7z a $ZipFile $ReleaseFile
-        7z a $ZipFile $ExeFile1
-        7z a $ZipFile $ExeFile2
-        7z a $ZipFile $ExeFile3
-        7z a $ZipFile $ExeFile4
-        7z a $ZipFile $ExeFile5
+        #7z a $ZipFile $ExeFile1
+        #7z a $ZipFile $ExeFile2
+        #7z a $ZipFile $ExeFile3
+        #7z a $ZipFile $ExeFile4
+        #7z a $ZipFile $ExeFile5
+        foreach ($file in $ReleaseFile) {
+            7z a $ZipFile $file
+        }        
         #7z a $ZipFile $ExeFile1 +" "+ $ExeFile2 +" "+ $ExeFile3 +" "+ $ExeFile4 +" "+ $ExeFile5
         #7z a $ZipFile $HashFile
-        7z a $ZipFile $ExeHashFile1
-        7z a $ZipFile $ExeHashFile2
-        7z a $ZipFile $ExeHashFile3
-        7z a $ZipFile $ExeHashFile4
-        7z a $ZipFile $ExeHashFile5
+        #7z a $ZipFile $ExeHashFile1
+        #7z a $ZipFile $ExeHashFile2
+        #7z a $ZipFile $ExeHashFile3
+        #7z a $ZipFile $ExeHashFile4
+        #7z a $ZipFile $ExeHashFile5
+        foreach ($file in $HashFile) {
+            7z a $ZipFile $file
+        }
         #7z a $ZipFile $ExeHashFile1 +" "+ $ExeHashFile2 +" "+ $ExeHashFile3 +" "+ $ExeHashFile4 +" "+ $ExeHashFile5
         #7z a $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx9\Release\example_win32_directx9.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx10\Release\example_win32_directx10.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx11\Release\example_win32_directx11.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
         Push-AppveyorArtifact $ZipFile
@@ -130,4 +136,4 @@ deploy:
   on:
     branch: master                # release from master branch only
     configuration: Release
-    APPVEYOR_REPO_TAG: true       # deploy on tag push only
+    APPVEYOR_REPO_TAG: false       # deploy on tag push only
