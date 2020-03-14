@@ -8,8 +8,8 @@ build:
   project: ./examples/imgui_examples.sln
   verbosity: minimal
 
-after_build:
-  -ps: 7z a .\$env:APPVEYOR_BUILD_VERSION.zip .\examples\example_win32_directx9\Release\example_win32_directx9.exe .\examples\example_win32_directx10\Release\example_win32_directx10.exe .\examples\example_win32_directx11\Release\example_win32_directx11.exe .\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe .\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
+#after_build:
+#  -ps: 7z a .\$env:APPVEYOR_BUILD_VERSION.zip .\examples\example_win32_directx9\Release\example_win32_directx9.exe .\examples\example_win32_directx10\Release\example_win32_directx10.exe .\examples\example_win32_directx11\Release\example_win32_directx11.exe .\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe .\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
 
 artifacts:
 - path: .\examples\example_win32_directx9\Release\example_win32_directx9.exe
@@ -22,14 +22,14 @@ artifacts:
   name: example_glfw_opengl2.exe
 - path: .\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
   name: example_glfw_opengl3.exe
-- path: .\$env:APPVEYOR_BUILD_VERSION.zip
-  name: $env:APPVEYOR_BUILD_VERSION.zip
+#- path: .\$env:APPVEYOR_BUILD_VERSION.zip
+#  name: $env:APPVEYOR_BUILD_VERSION.zip
 
 deploy:
 - provider: GitHub
   auth_token:
     secure: jh3HUO1hV25i75MT9+1c4mBG2wE3X+RWfF+X/Qe6aqedRwHrTVN690kFmu4glHsu
-  artifact: $env:APPVEYOR_BUILD_VERSION.zip
+  #artifact: $env:APPVEYOR_BUILD_VERSION.zip
   #draft: true
     #prerelease: true
     #on:
