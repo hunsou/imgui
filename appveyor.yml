@@ -35,11 +35,9 @@ deploy:
   artifact: release-%APPVEYOR_BUILD_VERSION%.zip
   #artifact: /.*\.zip/
   #draft: true
-    #prerelease: true
+    prerelease: true
+    #force_update: true
     #on:
       #branch: master                # release from master branch only
       #configuration: Release
       #APPVEYOR_REPO_TAG: true       # deploy on tag push only
-  #draft: true
-  prerelease: true
-  force_update: true
