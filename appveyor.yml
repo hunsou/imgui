@@ -130,4 +130,4 @@ deploy:
   on:
     branch: master                # release from master branch only
     configuration: Release
-    APPVEYOR_REPO_TAG: false       # deploy on tag push only
+    APPVEYOR_REPO_TAG: true       # deploy on tag push only
