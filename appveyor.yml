@@ -1,7 +1,7 @@
 version: 1.0.{build}
-configuration: 
+configuration: Release
 #- Debug
-- Release
+#- Release
 platform: Win32
 clone_folder: C:\Projects\Github\imgui
 build:
@@ -32,8 +32,8 @@ deploy:
 - provider: GitHub
   auth_token:
     secure: jh3HUO1hV25i75MT9+1c4mBG2wE3X+RWfF+X/Qe6aqedRwHrTVN690kFmu4glHsu
-  #artifact: "$env:APPVEYOR_BUILD_VERSION.zip"
-  artifact: /.*\.zip/
+  artifact: "$env:APPVEYOR_BUILD_VERSION.zip"
+  #artifact: /.*\.zip/
   #draft: true
     #prerelease: true
     #on:
