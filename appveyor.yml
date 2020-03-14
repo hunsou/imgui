@@ -75,7 +75,7 @@ after_build:
         #$HashFile = "$ReleaseFile.hash"
         $HashFile = $ExeHashFile1+$ExeHashFile2+$ExeHashFile3+$ExeHashFile4+$ExeHashFile5
         #$ZipFile = "$WorkingFolder\Shadowsocks-$env:APPVEYOR_BUILD_VERSION.zip"
-        $ZipFile = $env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip
+        $ZipFile = "$env:APPVEYOR_BUILD_FOLDER\release-$env:APPVEYOR_BUILD_VERSION.zip"
         #$ZipHashFile = "$ZipFile.hash"
         $ZipHashFile = "$ZipFile.hash"
         # Calculate exe Hash and archieve both exe and hash to zip
