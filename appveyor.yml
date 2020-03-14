@@ -12,7 +12,7 @@ after_build:
 #  -ps: 
 ps: |
 7z a $env:APPVEYOR_BUILD_FOLDER\$env:APPVEYOR_BUILD_VERSION.zip $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx9\Release\example_win32_directx9.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx10\Release\example_win32_directx10.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_win32_directx11\Release\example_win32_directx11.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl2\Release\example_glfw_opengl2.exe $env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe
-Push-AppveyorArtifact $env:APPVEYOR_BUILD_FOLDER\$env:APPVEYOR_BUILD_VERSION.zip
+Push-AppveyorArtifact "$env:APPVEYOR_BUILD_FOLDER\$env:APPVEYOR_BUILD_VERSION.zip"
 
 #artifacts:
 #- path: .\examples\example_win32_directx9\Release\example_win32_directx9.exe
