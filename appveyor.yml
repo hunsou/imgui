@@ -23,7 +23,7 @@ after_build:
         return $text
     }
     $WorkingFolder = "$env:APPVEYOR_BUILD_FOLDER\bin"    
-    #$ExeFileName = "imgui-$env:APPVEYOR_BUILD_VERSION-$env:CONFIGURATION.exe"
+    #$ExeFileName = "Shadowsocks-$env:APPVEYOR_BUILD_VERSION-$env:CONFIGURATION.exe"
     #$ExeFile = "$WorkingFolder\$ExeFileName"
     #$ExeHashFile = "$Exefile.hash"    
     $ExeFileName1 = "example_win32_directx9.exe"
