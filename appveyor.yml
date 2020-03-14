@@ -53,7 +53,9 @@ after_build:
     Copy-Item $ExeFileOrg2 $ExeFile2
     Copy-Item $ExeFileOrg3 $ExeFile3
     Copy-Item $ExeFileOrg4 $ExeFile4
-    Copy-Item $ExeFileOrg5 $ExeFile5   
+    Copy-Item $ExeFileOrg5 $ExeFile5
+    $SrcFiles = "$env:APPVEYOR_BUILD_FOLDER\src"
+    Copy-Item -Path $SrcFiles -Destination $WorkingFolder -Recurse
     #CalculateHash -file $Exefile | Out-File -FilePath $ExeHashFile
     #Push-AppveyorArtifact $ExeFile
     #Push-AppveyorArtifact $ExeHashFile    
@@ -76,7 +78,8 @@ after_build:
     if ($env:configuration -eq 'Release')
     {
         #$ReleaseFile = "$WorkingFolder\Shadowsocks.exe"
-        $ReleaseFile = "$WorkingFolder\*.exe"
+        #$ReleaseFile = "$WorkingFolder\*.exe"
+        $ReleaseFile = "$WorkingFolder\*"
         #$HashFile = "$ReleaseFile.hash"
         $HashFile = "$WorkingFolder\*.exe.hash"
         #$ZipFile = "$WorkingFolder\Shadowsocks-$env:APPVEYOR_BUILD_VERSION.zip"
@@ -85,7 +88,7 @@ after_build:
         # Calculate exe Hash and archieve both exe and hash to zip
         #CalculateHash -file $ReleaseFile | Out-File -FilePath $hashFile        
         7z a $ZipFile $ReleaseFile
-        7z a $ZipFile $HashFile
+        #7z a $ZipFile $HashFile
         Push-AppveyorArtifact $ZipFile
         # Calculate zip Hash
         CalculateHash -file $ZipFile | Out-File -FilePath $ZipHashFile
