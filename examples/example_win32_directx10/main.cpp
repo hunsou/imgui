@@ -32,13 +32,13 @@ int main(int argc, char  *argv[])
     {
         if (strcmp(argv[1],"debug") == 0)
         {
-            printf("%s\n",argv[0] );//è·å–ç¨‹åºåç§° ç´¢å¼•ä¸º0
-	        printf("%s\n",argv[1] );//è·å–ç¨‹åºç¬¬ä¸€ä¸ªå‚æ•°ç´¢å¼•ä¸º1
-	        printf("%s\n",argv[2] );//è·å–ç¨‹åºç¬¬äºŒä¸ªå‚æ•°ç´¢å¼•ä¸º2
+            printf("%s\n",argv[0] );//»ñÈ¡³ÌĞòÃû³Æ Ë÷ÒıÎª0
+	        printf("%s\n",argv[1] );//»ñÈ¡³ÌĞòµÚÒ»¸ö²ÎÊıË÷ÒıÎª1
+	        printf("%s\n",argv[2] );//»ñÈ¡³ÌĞòµÚ¶ş¸ö²ÎÊıË÷ÒıÎª2
         }
         else
         {
-            printf("%s\n",argv[0] );//è·å–ç¨‹åºåç§° ç´¢å¼•ä¸º0
+            printf("%s\n",argv[0] );//»ñÈ¡³ÌĞòÃû³Æ Ë÷ÒıÎª0
         }
     }
     else
@@ -150,7 +150,7 @@ int main(int argc, char  *argv[])
 
         if (ImGui::BeginMainMenuBar())
         {
-            if (ImGui::BeginMenu(u8"æ–‡ä»¶"))
+            if (ImGui::BeginMenu(u8"ÎÄ¼ş"))
             {
                 //ShowExampleMenuFile();                
                 if (ImGui::MenuItem("New")) {}
@@ -167,9 +167,9 @@ int main(int argc, char  *argv[])
                 if (ImGui::MenuItem("Paste", "CTRL+V")) {}
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu(u8"å¸®åŠ©"))
+            if (ImGui::BeginMenu(u8"°ïÖú"))
             {
-                if (ImGui::MenuItem(u8"å…³äº")) {}
+                if (ImGui::MenuItem(u8"¹ØÓÚ")) {}
                 if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
                 ImGui::Separator();
                 if (ImGui::MenuItem("Cut", "CTRL+X")) {}
@@ -197,7 +197,7 @@ int main(int argc, char  *argv[])
             ImGui::Begin("Hello, world!", NULL, window_flags);                          // Create a window called "Hello, world!" and append into it.
             ImGui::SetWindowPos(ImVec2(0, 18));
             ImGui::SetWindowSize(ImVec2(800, 582));            
-            ImGui::Text(u8"è¿™æ˜¯ä¸€äº›æœ‰ç”¨çš„æ–‡å­—.\nThis is some useful text.");               // Display some text (you can use a format strings too)
+            ImGui::Text(u8"ÕâÊÇÒ»Ğ©ÓĞÓÃµÄÎÄ×Ö.\nThis is some useful text.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
             ImGui::Checkbox("Another Window", &show_another_window);
 
@@ -313,26 +313,26 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_DRAWFRAME);
         break;*/
     //case WM_LBUTTONDOWN:
-    //    SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);  //å‘çª—å£å‘é€WM_NCLBUTTONDOWNæ¶ˆæ¯ï¼ŒHTCAPTION æ ‡é¢˜
+    //    SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);  //Ïò´°¿Ú·¢ËÍWM_NCLBUTTONDOWNÏûÏ¢£¬HTCAPTION ±êÌâ
     //    //MessageBox(hWnd, NULL, NULL, MB_OK);
     //    break;
     case WM_RBUTTONDOWN:
-        SetCapture(hWnd);      // è®¾ç½®é¼ æ ‡æ•è·(é˜²æ­¢å…‰æ ‡è·‘å‡ºçª—å£å¤±å»é¼ æ ‡çƒ­ç‚¹)       
-        GetCursorPos(&pt);      // è·å–é¼ æ ‡å…‰æ ‡æŒ‡é’ˆå½“å‰ä½ç½®      
-        GetWindowRect(hWnd, &rt);  // è·å–çª—å£ä½ç½®ä¸å¤§å° 
-        re.right = rt.right - rt.left;    // ä¿å­˜çª—å£å®½åº¦  
-        re.bottom = rt.bottom - rt.top; // ä¿å­˜çª—å£é«˜åº¦  
+        SetCapture(hWnd);      // ÉèÖÃÊó±ê²¶»ñ(·ÀÖ¹¹â±êÅÜ³ö´°¿ÚÊ§È¥Êó±êÈÈµã)       
+        GetCursorPos(&pt);      // »ñÈ¡Êó±ê¹â±êÖ¸Õëµ±Ç°Î»ÖÃ      
+        GetWindowRect(hWnd, &rt);  // »ñÈ¡´°¿ÚÎ»ÖÃÓë´óĞ¡ 
+        re.right = rt.right - rt.left;    // ±£´æ´°¿Ú¿í¶È  
+        re.bottom = rt.bottom - rt.top; // ±£´æ´°¿Ú¸ß¶È  
         break;
     case WM_RBUTTONUP:
-        ReleaseCapture();      // é‡Šæ”¾é¼ æ ‡æ•è·ï¼Œæ¢å¤æ­£å¸¸çŠ¶æ€ 
+        ReleaseCapture();      // ÊÍ·ÅÊó±ê²¶»ñ£¬»Ö¸´Õı³£×´Ì¬ 
         break;
     case WM_MOUSEMOVE:
-        GetCursorPos(&pe);     // è·å–å…‰æ ‡æŒ‡é’ˆçš„æ–°ä½ç½®
-        if (wParam == MK_RBUTTON)    // å½“é¼ æ ‡å³é”®æŒ‰ä¸‹
+        GetCursorPos(&pe);     // »ñÈ¡¹â±êÖ¸ÕëµÄĞÂÎ»ÖÃ
+        if (wParam == MK_RBUTTON)    // µ±Êó±êÓÒ¼ü°´ÏÂ
         {
-            re.left = rt.left + (pe.x - pt.x);  // çª—å£æ–°çš„æ°´å¹³ä½ç½®  
-            re.top = rt.top + (pe.y - pt.y); // çª—å£æ–°çš„å‚ç›´ä½ç½® 
-            MoveWindow(hWnd, re.left, re.top, re.right, re.bottom, true); // ç§»åŠ¨çª—å£ 
+            re.left = rt.left + (pe.x - pt.x);  // ´°¿ÚĞÂµÄË®Æ½Î»ÖÃ  
+            re.top = rt.top + (pe.y - pt.y); // ´°¿ÚĞÂµÄ´¹Ö±Î»ÖÃ 
+            MoveWindow(hWnd, re.left, re.top, re.right, re.bottom, true); // ÒÆ¶¯´°¿Ú 
         }
         break;
     case WM_SIZE:
