@@ -46,8 +46,12 @@ after_build:
     $ExeHashFile4 = "$Exefile4.hash"
     $ExeFileName5 = "example_glfw_opengl3.exe"
     $ExeFileOrg5 = "$env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe"
-    $ExeFile5 = "$WorkingFolder\$ExeFileName5"
-    $ExeHashFile5 = "$Exefile5.hash"    
+    $ExeFile6 = "$WorkingFolder\$ExeFileName5"
+    $ExeHashFile6 = "$Exefile5.hash"
+    $ExeFileName6 = "mydll.dll"
+    $ExeFileOrg6 = "$env:APPVEYOR_BUILD_FOLDER\dlls\mydll\Release\mydll.dll"
+    $ExeFile5 = "$WorkingFolder\$ExeFileName6"
+    $ExeHashFile5 = "$Exefile6.hash"
     New-Item $WorkingFolder -ItemType Directory -Force
     #Copy-Item $env:APPVEYOR_BUILD_FOLDER\shadowsocks-csharp\bin\$env:PLATFORM\$env:CONFIGURATION\Shadowsocks.exe $WorkingFolder\Shadowsocks.exe
     #Copy-Item $WorkingFolder\Shadowsocks.exe $ExeFile
@@ -56,6 +60,7 @@ after_build:
     Copy-Item $ExeFileOrg3 $ExeFile3
     Copy-Item $ExeFileOrg4 $ExeFile4
     Copy-Item $ExeFileOrg5 $ExeFile5
+    Copy-Item $ExeFileOrg6 $ExeFile6
     $SrcFiles = "$env:APPVEYOR_BUILD_FOLDER\src"
     Copy-Item -Path $SrcFiles -Destination $WorkingFolder -Recurse
     #CalculateHash -file $Exefile | Out-File -FilePath $ExeHashFile
@@ -76,6 +81,9 @@ after_build:
     CalculateHash -file $Exefile5 | Out-File -FilePath $ExeHashFile5
     Push-AppveyorArtifact $ExeFile5
     Push-AppveyorArtifact $ExeHashFile5
+    CalculateHash -file $Exefile6 | Out-File -FilePath $ExeHashFile6
+    Push-AppveyorArtifact $ExeFile6
+    Push-AppveyorArtifact $ExeHashFile6
     # Create and deploy the release zip
     if ($env:configuration -eq 'Release')
     {
