@@ -1,0 +1,3 @@
+[submodule "dlls"]
+	path = dlls
+	url = git@github.com:hunsou/dlls.git
