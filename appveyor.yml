@@ -9,7 +9,7 @@ build:
   verbosity: minimal
 
 environment:
-  APPVEYOR_SSH_KEY: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/j5I7tIKq4AGBwK6KB43O2OsdTMLgg8xz19wzH+e021Ig866Bn0v75lHfzaGz481hH8SIoineQXnp+026b2NFJY3In7txabAo525Jjm/QyHMP9CpgBAWymiAcE1bOtRqIVpsaGMUnjHyhmU3YJAJ5eDTekPHOv2YF22B4WWiWfxnXS24XqYS4wVgXD9agDDNUpJsjyUFXMdL8m/dX5oP1CyjHYpmjnCofPSxmZKd1XTab4a1BKiqCQZsuWblDBMJznT0WIRMCLfZQO5tZSlLaDcR8yz9EEFwOGAmR+ao5V9ZN8QW5Wl1EAD+1W1xtJeC682PlWo8HaXB3h6rC0JPoBGfi9596fNluzwcwSrwWdXEVayUe3h1agMU7RjacfmW8hHEHuQNyqB86Gre4VKaxIHllPHAgTWAydkVFVIl2WI2oF571Gz1vVpKVhCkTysapGwX5Del3FejV4v8qNkrheR1A+khkLx2PpSjyU4+zYtr6Zbuh058gPXjfip8WaHE= hunsou@android-dkg3lth338yy1qgc
+  APPVEYOR_SSH_KEY: ssh-rsa
 
 init:
   - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
