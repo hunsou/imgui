@@ -52,12 +52,12 @@ after_build:
     $ExeHashFile4 = "$Exefile4.hash"
     $ExeFileName5 = "example_glfw_opengl3.exe"
     $ExeFileOrg5 = "$env:APPVEYOR_BUILD_FOLDER\examples\example_glfw_opengl3\Release\example_glfw_opengl3.exe"
-    $ExeFile6 = "$WorkingFolder\$ExeFileName6"
-    $ExeHashFile6 = "$Exefile6.hash"
+    $ExeFile5 = "$WorkingFolder\$ExeFileName5"
+    $ExeHashFile5 = "$Exefile5.hash"
     $ExeFileName6 = "mydll.dll"
     $ExeFileOrg6 = "$env:APPVEYOR_BUILD_FOLDER\dlls\mydll\Release\mydll.dll"
-    $ExeFile5 = "$WorkingFolder\$ExeFileName6"
-    $ExeHashFile5 = "$Exefile6.hash"
+    $ExeFile6 = "$WorkingFolder\$ExeFileName6"
+    $ExeHashFile6 = "$Exefile6.hash"
     New-Item $WorkingFolder -ItemType Directory -Force
     #Copy-Item $env:APPVEYOR_BUILD_FOLDER\shadowsocks-csharp\bin\$env:PLATFORM\$env:CONFIGURATION\Shadowsocks.exe $WorkingFolder\Shadowsocks.exe
     #Copy-Item $WorkingFolder\Shadowsocks.exe $ExeFile
