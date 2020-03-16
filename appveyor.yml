@@ -123,4 +123,4 @@ deploy:
   on:
     branch: master                # release from master branch only
     configuration: Release
-    APP#VEYOR_REPO_TAG: false       # deploy on tag push only
+    #APPVEYOR_REPO_TAG: false       # deploy on tag push only
