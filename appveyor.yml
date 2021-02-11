@@ -1,12 +1,12 @@
-version: 1.0.{build}
+#version: 1.0.{build}
 configuration: Release
 platform: Win32
-clone_folder: C:\Projects\Github\imgui
+#clone_folder: C:\Projects\Github\imgui
 install:
   - git submodule update --init --recursive
 build:
   project: ./examples/imgui_examples.sln
-  verbosity: minimal
+  #verbosity: minimal
 
 environment:
   APPVEYOR_SSH_KEY: ssh-rsa
